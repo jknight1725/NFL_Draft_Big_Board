@@ -4,7 +4,7 @@ require 'tty-prompt'
 require 'colorize'
 
 class Draftee
-  attr_reader :name, :position, :school, :prompt
+  attr_reader :name, :position, :school
   attr_accessor :comparisons, :points
 
   def initialize(args)
@@ -13,13 +13,12 @@ class Draftee
     @school = args[:school]
     @points = 1
     @comparisons = {}
-    @prompt = TTY::Prompt.new
   end
 
   def compare(other)
     comparisons[other] = true
     other.comparisons[self] = true
-    result = prompt.select("#{name} or #{other.name}", [name, other.name])
+    result = TTY::Prompt.new.select("#{name} or #{other.name}", [name, other.name])
     result == name ? self.points += other.points : other.points += self.points
   end
 
